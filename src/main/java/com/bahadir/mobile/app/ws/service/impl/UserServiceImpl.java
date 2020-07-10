@@ -3,6 +3,7 @@ package com.bahadir.mobile.app.ws.service.impl;
 import com.bahadir.mobile.app.ws.UserRepository;
 import com.bahadir.mobile.app.ws.io.entity.UserEntity;
 import com.bahadir.mobile.app.ws.service.UserService;
+import com.bahadir.mobile.app.ws.shared.Utils;
 import com.bahadir.mobile.app.ws.shared.dto.UserDto;
 import org.apache.catalina.User;
 import org.springframework.beans.BeanUtils;
@@ -15,6 +16,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    Utils utils;
+
     @Override
     public UserDto createUser(UserDto user) {
 
@@ -23,8 +27,9 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = new UserEntity();
         BeanUtils.copyProperties(user, userEntity);
 
+        String publicUserId = utils.generateUserId(30);
         userEntity.setEncryptedPassword("this is an encrypted password");
-        userEntity.setUserId("this is a user id");
+        userEntity.setUserId(publicUserId);
 
         UserEntity storedUserDetails = userRepository.save(userEntity); //this may include id value I am not sure
 
