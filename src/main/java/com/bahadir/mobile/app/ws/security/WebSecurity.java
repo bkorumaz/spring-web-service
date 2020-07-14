@@ -23,13 +23,19 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/users").permitAll()
-                .anyRequest().authenticated().and().addFilter(new AuthenticationFilter(authenticationManager())); //any other request will need to be authenticated
+                .anyRequest().authenticated().and().addFilter(getAuthenticationFilter()); //any other request will need to be authenticated
     }
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
         //we say which interface we are using for user details service and what encryption method we use to protect our password it comes from spring
+    }
+
+    public AuthenticationFilter getAuthenticationFilter() throws Exception {
+        final AuthenticationFilter filter = new AuthenticationFilter(authenticationManager());
+        filter.setFilterProcessesUrl("/users/login");
+        return filter;
     }
 
 }
