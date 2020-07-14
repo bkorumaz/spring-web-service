@@ -1,4 +1,4 @@
-package com.bahadir.mobile.app.ws;
+package com.bahadir.mobile.app.ws.io.repositories;
 
 import com.bahadir.mobile.app.ws.io.entity.UserEntity;
 import org.springframework.data.repository.CrudRepository;

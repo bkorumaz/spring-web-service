@@ -1,6 +1,6 @@
 package com.bahadir.mobile.app.ws.service.impl;
 
-import com.bahadir.mobile.app.ws.UserRepository;
+import com.bahadir.mobile.app.ws.io.repositories.UserRepository;
 import com.bahadir.mobile.app.ws.io.entity.UserEntity;
 import com.bahadir.mobile.app.ws.service.UserService;
 import com.bahadir.mobile.app.ws.shared.Utils;
@@ -43,6 +43,18 @@ public class UserServiceImpl implements UserService {
 
         UserDto returnValue = new UserDto();
         BeanUtils.copyProperties(storedUserDetails, returnValue);
+
+        return returnValue;
+    }
+
+    @Override
+    public UserDto getUser(String email) {
+        UserEntity userEntity = userRepository.findByEmail(email);
+
+        if(userEntity==null) throw new UsernameNotFoundException(email);
+
+        UserDto returnValue = new UserDto();
+        BeanUtils.copyProperties(userEntity, returnValue);
 
         return returnValue;
     }
